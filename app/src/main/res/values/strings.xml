@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Remember</string>
+
+    <string name="note_detail_title">Detalles de la nota</string>
+    <string name="title_detail_label">Título</string>
+    <string name="content_detail_label">Contenido</string>
+    <string name="note_title">Título</string>
+    <string name="note_content">Contenido</string>
+    <string name="campo_error">Campo obligatorio</string>
+    <string name="add_note_error">Error añadiendo la nota</string>
+    <string name="note_save_success">Nota creada correctamente</string>
 </resources>
