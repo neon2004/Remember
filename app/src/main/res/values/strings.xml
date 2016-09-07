@@ -9,4 +9,8 @@
     <string name="campo_error">Campo obligatorio</string>
     <string name="add_note_error">Error añadiendo la nota</string>
     <string name="note_save_success">Nota creada correctamente</string>
+    <string name="logout">Salir</string>
+    <string name="orden_alfabetico">Filtrar título</string>
+    <string name="orden_fecha">Filtrar fecha</string>
+    <string name="error_getNotas">Error obteniendo las notas</string>
 </resources>

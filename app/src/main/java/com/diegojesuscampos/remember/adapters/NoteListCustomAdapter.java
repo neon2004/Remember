@@ -1,6 +1,7 @@
 package com.diegojesuscampos.remember.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +20,13 @@ import java.util.Locale;
 public class NoteListCustomAdapter extends BaseAdapter {
 
     private static final String datePattern = "HH:mm dd/MM/yyyy";
+    private final Context ctx;
     private List<Note> notes;
     private LayoutInflater mInflater;
 
     public NoteListCustomAdapter(Context context, List<Note> noteList) {
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         notes = noteList;
+        ctx = context;
     }
 
     @Override
@@ -44,23 +46,37 @@ public class NoteListCustomAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder = null;
+        View item = convertView;
         Note note = getItem(position);
-        if (note != null) {
-            convertView = mInflater.inflate(R.layout.list_item, parent, false);
 
-            TextView nameText = (TextView) convertView.findViewById(R.id.name);
-            TextView updatedDateText = (TextView) convertView.findViewById(R.id.date);
+        if(item == null || !( item.getTag() instanceof ViewHolder)) {
+                LayoutInflater mInflater = LayoutInflater.from(ctx);
+                item = mInflater.inflate( R.layout.list_item, null);
+                holder = new ViewHolder();
 
-            if (nameText != null) {
-                nameText.setText(note.getTitle());
-            }
-            if (updatedDateText != null) {
-                SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern, Locale.ENGLISH);
-                updatedDateText.setText(dateFormatter.format(new Date(note.getUpdated())));
-            }
+                holder.titulo = (TextView) item.findViewById(R.id.name);
+                holder.fecha = (TextView) item.findViewById(R.id.date);
+
+                item.setTag(holder);
+        }else{
+            holder = (ViewHolder) item.getTag();
         }
 
-        return convertView;
+        if (note != null) {
+            if (holder.titulo != null) {
+                holder.titulo.setText(note.getTitle());
+            }
+            if (holder.fecha != null) {
+                SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern, Locale.ENGLISH);
+                holder.fecha.setText(dateFormatter.format(new Date(note.getUpdated())));
+            }
+        }
+        return item;
+    }
+
+    static class ViewHolder{
+        TextView titulo,fecha;
     }
 
 }
