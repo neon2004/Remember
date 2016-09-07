@@ -68,6 +68,7 @@ public class NoteListFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_note_list, container, false);
+        getActivity().setTitle(R.string.list_notes);
         this.ctx = getActivity();
         //enable options menu
         setHasOptionsMenu(true);

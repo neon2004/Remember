@@ -13,4 +13,7 @@
     <string name="orden_alfabetico">Filtrar título</string>
     <string name="orden_fecha">Filtrar fecha</string>
     <string name="error_getNotas">Error obteniendo las notas</string>
+    <string name="list_notes">Listado de notas</string>
+    <string name="add_nota">Añadir nota</string>
+    <string name="guardando">Guardando...</string>
 </resources>

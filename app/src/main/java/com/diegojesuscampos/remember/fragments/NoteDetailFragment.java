@@ -85,6 +85,7 @@ public class NoteDetailFragment extends Fragment {
         noteStoreClient.getNoteAsync(noteGuid, true, false, false, false, new EvernoteCallback<Note>() {
             @Override
             public void onSuccess(final Note nota) {
+                getActivity().setTitle(nota.getTitle());
                 new GetHtmlNote(nota,clientFactory).execute();
             }
 
