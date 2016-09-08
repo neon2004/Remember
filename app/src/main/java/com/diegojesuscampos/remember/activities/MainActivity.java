@@ -234,11 +234,11 @@ public class MainActivity extends AppCompatActivity implements EvernoteLoginFrag
                         Point size = new Point();
                         getWindowManager().getDefaultDisplay().getSize(size);
 
-                        x = size.x / 2;
-                        y = size.y / 2;
+                        x = size.x;
+                        y = size.y;
                     } else {
-                        x = getWindowManager().getDefaultDisplay().getWidth() / 2;
-                        y = getWindowManager().getDefaultDisplay().getHeight() / 2;
+                        x = getWindowManager().getDefaultDisplay().getWidth();
+                        y = getWindowManager().getDefaultDisplay().getHeight();
                     }
 
                     dimen = x < y ? x : y;
