@@ -1,17 +1,10 @@
 package com.diegojesuscampos.remember.fragments;
 
-
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,9 +17,6 @@ import com.diegojesuscampos.remember.activities.MainActivity;
 import com.evernote.client.android.EvernoteSession;
 import com.evernote.client.android.asyncclient.EvernoteCallback;
 import com.evernote.client.android.asyncclient.EvernoteNoteStoreClient;
-import com.evernote.edam.error.EDAMNotFoundException;
-import com.evernote.edam.error.EDAMSystemException;
-import com.evernote.edam.error.EDAMUserException;
 import com.evernote.edam.notestore.NoteCollectionCounts;
 import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteList;
@@ -34,15 +24,11 @@ import com.evernote.edam.type.Note;
 import com.evernote.edam.type.NoteSortOrder;
 
 import com.diegojesuscampos.remember.adapters.NoteListCustomAdapter;
-import com.evernote.edam.type.Notebook;
-import com.evernote.thrift.TException;
-
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class NoteListFragment extends Fragment {
 
-    public static final int REQUEST_NOTE_DETAIL = 1;
     private static Context ctx;
 
     private ListView noteListView;
@@ -106,18 +92,6 @@ public class NoteListFragment extends Fragment {
             }
         });
     }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-////            case R.id.action_settings:
-////
-////                break;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
-
 
     private void showAddScreen() {
         callBack.cargarFragment(App.FRAGMENT_ADD_NOTES,null);
@@ -138,65 +112,37 @@ public class NoteListFragment extends Fragment {
 
         final NoteFilter filter = new NoteFilter();
         filter.setOrder(orden.getValue());
+        noteStoreClient.findNoteCountsAsync(filter, false, new EvernoteCallback<NoteCollectionCounts>() {
+            @Override
+            public void onSuccess(NoteCollectionCounts result) {
 
+                for (String keyNoteBooks : result.getNotebookCounts().keySet()) {
+                    totalNotas += result.getNotebookCounts().get(keyNoteBooks).intValue();
+                }
 
-            noteStoreClient.findNoteCountsAsync(filter, false, new EvernoteCallback<NoteCollectionCounts>() {
-                @Override
-                public void onSuccess(NoteCollectionCounts result) {
-
-                    for (String keyNoteBooks : result.getNotebookCounts().keySet()) {
-                        totalNotas += result.getNotebookCounts().get(keyNoteBooks).intValue();
+                noteStoreClient.findNotesAsync(filter, 0, totalNotas, new EvernoteCallback<NoteList>() {
+                    @Override
+                    public void onSuccess(NoteList result) {
+                        if (result != null) {
+                            //clear data but not losing reference to keep adapter working
+                            notes.clear();
+                            notes.addAll(result.getNotes());
+                            //refresh data
+                            noteListCustomAdapter.notifyDataSetChanged();
+                        }
                     }
 
-                    noteStoreClient.findNotesAsync(filter, 0, totalNotas, new EvernoteCallback<NoteList>() {
-                        @Override
-                        public void onSuccess(NoteList result) {
-                            if (result != null) {
-                                notes.clear();
+                    @Override
+                    public void onException(Exception exception) {
+                        showErrorLoadNotes();
+                    }
+                });
+            }
 
-                                notes.addAll(result.getNotes());
-                                //clear data but not losing reference to keep adapter working
+            @Override
+            public void onException(Exception exception) {
 
-
-                                //refresh data
-                                noteListCustomAdapter.notifyDataSetChanged();
-                            }
-                        }
-
-                        @Override
-                        public void onException(Exception exception) {
-                            showErrorLoadNotes();
-                        }
-                    });
-                }
-
-                @Override
-                public void onException(Exception exception) {
-
-                }
-            });
-
-
-
-//        new NotesLoadTask().execute();
+            }
+        });
     }
-
-//    private class NotesLoadTask extends AsyncTask<Void, Void, NoteList> {
-//
-//        @Override
-//        protected NoteList doInBackground(Void... voids) {
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(NoteList noteList) {
-//            if (noteList != null) {
-//                //clear data but not losing reference to keep adapter working
-//                notes.clear();
-//                notes.addAll(noteList.getNotes());
-//                //refresh data
-//                noteListCustomAdapter.notifyDataSetChanged();
-//            }
-//        }
-//    }
 }

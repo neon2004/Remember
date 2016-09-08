@@ -1,16 +1,14 @@
 package com.diegojesuscampos.remember.fragments;
 
-import android.app.Activity;
+
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.app.DialogFragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +20,6 @@ import com.diegojesuscampos.remember.activities.MainActivity;
 import com.evernote.client.android.EvernoteSession;
 import com.evernote.client.android.EvernoteUtil;
 import com.evernote.client.android.asyncclient.EvernoteCallback;
-import com.evernote.client.android.asyncclient.EvernoteClientFactory;
 import com.evernote.client.android.asyncclient.EvernoteNoteStoreClient;
 import com.evernote.client.conn.mobile.FileData;
 import com.evernote.edam.type.Note;
@@ -35,8 +32,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class AddNoteFragment extends DialogFragment {
     private static ImageView imageView;

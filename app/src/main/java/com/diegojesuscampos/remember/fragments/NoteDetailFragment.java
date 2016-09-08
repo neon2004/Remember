@@ -16,27 +16,21 @@ import com.evernote.client.android.asyncclient.EvernoteCallback;
 import com.evernote.client.android.asyncclient.EvernoteClientFactory;
 import com.evernote.client.android.asyncclient.EvernoteHtmlHelper;
 import com.evernote.client.android.asyncclient.EvernoteNoteStoreClient;
-import com.evernote.client.android.type.NoteRef;
 import com.evernote.edam.error.EDAMNotFoundException;
 import com.evernote.edam.error.EDAMSystemException;
 import com.evernote.edam.error.EDAMUserException;
-import com.evernote.edam.type.LinkedNotebook;
 import com.evernote.edam.type.Note;
 import com.diegojesuscampos.remember.R;
 import com.evernote.thrift.TException;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.util.List;
+
 
 
 public class NoteDetailFragment extends Fragment {
     public static final String EXTRA_NOTE_GUID = "extra_note_guid";
 
-//    private Note noteView;
-
-    TextView titleText;
-    TextView contentText;
     private String noteGuid;
     WebView wv;
     private EvernoteHtmlHelper mEvernoteHtmlHelper;
@@ -70,18 +64,12 @@ public class NoteDetailFragment extends Fragment {
     }
 
     private void initUIReferences(View view) {
-//        titleText = (TextView) root.findViewById(R.id.title_detail_value);
-//        contentText = (TextView) root.findViewById(R.id.content_detail_value);
          wv = (WebView) view.findViewById(R.id.webView);
     }
 
     private void loadNoteContent() {
-
         final EvernoteClientFactory clientFactory = EvernoteSession.getInstance().getEvernoteClientFactory();
-
-
         final EvernoteNoteStoreClient noteStoreClient = EvernoteSession.getInstance().getEvernoteClientFactory().getNoteStoreClient();
-
         noteStoreClient.getNoteAsync(noteGuid, true, false, false, false, new EvernoteCallback<Note>() {
             @Override
             public void onSuccess(final Note nota) {
@@ -98,7 +86,6 @@ public class NoteDetailFragment extends Fragment {
 
     // OBTENEMO EL HTML DE LA NOTA PARA VISUALIZAR
     class GetHtmlNote extends AsyncTask<Void, Void, EvernoteHtmlHelper> {
-
         private Note nota;
         private  EvernoteClientFactory clientFactory;
 
@@ -175,7 +162,6 @@ public class NoteDetailFragment extends Fragment {
                             if (webResourceResponse != null) {
                                 return webResourceResponse;
                             }
-
                         } catch (Exception e) {
 
                         }
@@ -208,6 +194,4 @@ public class NoteDetailFragment extends Fragment {
         }
 
     }
-
-
 }

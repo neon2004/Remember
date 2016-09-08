@@ -32,6 +32,7 @@ import com.diegojesuscampos.remember.fragments.AddNoteFragment;
 import com.diegojesuscampos.remember.fragments.NoteDetailFragment;
 import com.diegojesuscampos.remember.fragments.NoteListFragment;
 import com.diegojesuscampos.remember.interfaces.ICargaFragment;
+import com.diegojesuscampos.remember.util.ImageData;
 import com.evernote.client.android.EvernoteSession;
 import com.evernote.client.android.login.EvernoteLoginFragment;
 import com.evernote.edam.type.Note;
@@ -162,12 +163,12 @@ public class MainActivity extends AppCompatActivity implements EvernoteLoginFrag
         startActivityForResult(intent, SELECT_IMAGE);
     }
 
-    public class ImageData {
-        public Bitmap imageBitmap;
-        public String filePath;
-        public String mimeType;
-        public String fileName;
-    }
+//    public class ImageData {
+//        public Bitmap imageBitmap;
+//        public String filePath;
+//        public String mimeType;
+//        public String fileName;
+//    }
 
     /**
      * Called when the control returns from an activity that we launched.
@@ -222,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements EvernoteLoginFrag
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = true;
 
+
                     Bitmap tempBitmap = BitmapFactory.decodeFile(image.filePath, options);
 
                     int dimen = 0;
@@ -232,11 +234,11 @@ public class MainActivity extends AppCompatActivity implements EvernoteLoginFrag
                         Point size = new Point();
                         getWindowManager().getDefaultDisplay().getSize(size);
 
-                        x = size.x;
-                        y = size.y;
+                        x = size.x / 2;
+                        y = size.y / 2;
                     } else {
-                        x = getWindowManager().getDefaultDisplay().getWidth();
-                        y = getWindowManager().getDefaultDisplay().getHeight();
+                        x = getWindowManager().getDefaultDisplay().getWidth() / 2;
+                        y = getWindowManager().getDefaultDisplay().getHeight() / 2;
                     }
 
                     dimen = x < y ? x : y;
@@ -254,7 +256,6 @@ public class MainActivity extends AppCompatActivity implements EvernoteLoginFrag
 
                 }
             } catch (Exception e) {
-//                Log.e(LOGTAG, "Error retrieving image");
             } finally {
                 if (cursor != null) {
                     cursor.close();
@@ -303,8 +304,6 @@ public class MainActivity extends AppCompatActivity implements EvernoteLoginFrag
         @SuppressWarnings("deprecation")
         @Override
         protected void onPostExecute(ImageData image) {
-//            removeDialog(DIALOG_PROGRESS);
-
             if (image == null) {
                 Toast.makeText(getApplicationContext(), "Error imagen", Toast.LENGTH_SHORT).show();
                 return;
@@ -313,13 +312,7 @@ public class MainActivity extends AppCompatActivity implements EvernoteLoginFrag
             if (image.imageBitmap != null) {
                 addNoteFragment.addImageView(image.imageBitmap);
             }
-
-//            if (mEvernoteSession.isLoggedIn()) {
-//                mBtnSave.setEnabled(true);
-//            }
-
             mImageData = image;
-//            updateSelectionUi();
         }
     }
 }
